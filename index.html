@@ -1,24 +1,115 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prediksi Bola</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prediksi Azore</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Prediksi Bola</h1>
-    
-    <label>Rata-rata Gol Tim A:</label>
-    <input type="number" step="0.1" id="golA">
+    <h1 class="judul">Prediction Azore</h1>
+    <div class="form-container">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="teamA">Tim Home</label>
+          <input type="text" id="teamA" />
+        </div>
+        <div class="form-group">
+          <label for="teamB">Tim Away</label>
+          <input type="text" id="teamB" />
+        </div>
+        <div class="form-group">
+          <label for="mode">HT/FT</label>
+          <select id="mode">
+            <option value="fulltime">Fulltime</option>
+            <option value="halftime">Halftime</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="pasaran">Pasaran Over/Under</label>
+          <input type="number" step="0.1" id="pasaran" />
+        </div>
+      </div>
 
-    <label>Rata-rata Gol Tim B:</label>
-    <input type="number" step="0.1" id="golB">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="oddsOver">Odds Over</label>
+          <input type="number" step="0.01" id="oddsOver" />
+        </div>
+        <div class="form-group">
+          <label for="oddsUnder">Odds Under</label>
+          <input type="number" step="0.01" id="oddsUnder" />
+        </div>
+        <div class="form-group">
+          <label for="teamAGoals">Total Gol Tim Home</label>
+          <input type="number" id="teamAGoals" />
+        </div>
+        <div class="form-group">
+          <label for="teamAConceded">Kebobolan Tim Home</label>
+          <input type="number" id="teamAConceded" />
+        </div>
+        <div class="form-group">
+          <label for="teamBGoals">Total Gol Tim Away</label>
+          <input type="number" id="teamBGoals" />
+        </div>
+        <div class="form-group">
+          <label for="teamBConceded">Kebobolan Tim Away</label>
+          <input type="number" id="teamBConceded" />
+        </div>
+      </div>
 
-    <button onclick="prediksi()">Prediksi</button>
+      <button onclick="prediksi()">Prediksi</button>
 
-    <div id="hasil"></div>
+      <div id="result"></div>
+    </div>
+
+    <div class="riwayat">
+      <h2>Riwayat Prediksi</h2>
+      <button onclick="clearAllRiwayat()">Clear All</button>
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Tim Home</th>
+            <th>Tim Away</th>
+            <th>HT/FT</th>
+            <th>Prediksi</th>
+            <th>Over/Under</th>
+            <th>Ganjil/Genap</th>
+            <th>Skor</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="riwayat"></tbody>
+      </table>
+
+      <div class="screenshot-button">
+        <button onclick="tampilkanScreenshotMode()">Tampilkan Versi Screenshot</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="popupScreenshot">
+    <div class="popup-content">
+      <h3>Versi Screenshot</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Tim A</th>
+            <th>Tim B</th>
+            <th>HT/FT</th>
+            <th>Prediksi</th>
+            <th>Over/Under</th>
+            <th>Ganjil/Genap</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody id="riwayatScreenshot"></tbody>
+      </table>
+      <button onclick="tutupScreenshotMode()">Tutup</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
