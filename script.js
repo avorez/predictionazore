@@ -1,43 +1,74 @@
+let nomor = 1;
+
 function prediksi() {
-  const golA = parseFloat(document.getElementById('golA').value);
-  const golB = parseFloat(document.getElementById('golB').value);
+  const teamA = document.getElementById('teamA').value;
+  const teamB = document.getElementById('teamB').value;
+  const mode = document.getElementById('mode').value;
+  const pasaran = parseFloat(document.getElementById('pasaran').value);
+  const oddsOver = parseFloat(document.getElementById('oddsOver').value);
+  const oddsUnder = parseFloat(document.getElementById('oddsUnder').value);
+  const teamAGoals = parseInt(document.getElementById('teamAGoals').value);
+  const teamAConceded = parseInt(document.getElementById('teamAConceded').value);
+  const teamBGoals = parseInt(document.getElementById('teamBGoals').value);
+  const teamBConceded = parseInt(document.getElementById('teamBConceded').value);
 
-  if (isNaN(golA) || isNaN(golB)) {
-    alert("Isi semua data terlebih dahulu.");
-    return;
-  }
+  const rataGol = ((teamAGoals + teamBGoals) + (teamAConceded + teamBConceded)) / 20;
+  const totalSkor = rataGol * (mode === "fulltime" ? 1 : 0.5);
+  let hasilOU = totalSkor > pasaran ? "Over" : "Under";
+  let hasilGG = Math.round(totalSkor) % 2 === 0 ? "Genap" : "Ganjil";
+  let prediksiMenang = teamAGoals > teamBGoals ? teamA : (teamAGoals < teamBGoals ? teamB : "Draw");
 
-  const totalGol = golA + golB;
-
-  // Over/Under
-  const overUnder = totalGol > 2.5 ? "Over 2.5" : "Under 2.5";
-
-  // Genap Ganjil
-  const totalBulat = Math.round(totalGol);
-  const genapGanjil = totalBulat % 2 === 0 ? "Genap" : "Ganjil";
-
-  // Prediksi Menang
-  let menang = "Imbang";
-  if (golA > golB) menang = "Tim A Unggul";
-  else if (golB > golA) menang = "Tim B Unggul";
-
-  // Prediksi Skor Sederhana
-  const skorA = Math.round(golA);
-  const skorB = Math.round(golB);
-
-  document.getElementById('hasil').innerHTML = `
-    <h3>Hasil Prediksi</h3>
-    <p><strong>Over/Under:</strong> ${overUnder}</p>
-    <p><strong>Prediksi Menang:</strong> ${menang}</p>
-    <p><strong>Total Gol Genap/Ganjil:</strong> ${genapGanjil}</p>
-    <p><strong>Prediksi Skor:</strong> ${skorA} - ${skorB}</p>
-    <hr>
-    <h4>Penjelasan Prediksi:</h4>
-    <ul>
-      <li><strong>Over/Under 2.5:</strong> Total gol dari kedua tim. Over jika > 2.5, Under jika ≤ 2.5.</li>
-      <li><strong>Prediksi Menang:</strong> Tim dengan rata-rata gol lebih tinggi diprediksi menang.</li>
-      <li><strong>Genap/Ganjil:</strong> Total gol genap atau ganjil.</li>
-      <li><strong>Prediksi Skor:</strong> Dibulatkan dari rata-rata gol tiap tim.</li>
-    </ul>
+  document.getElementById("result").innerHTML = `
+    <div class="hasil">
+      <strong>${teamA} vs ${teamB}</strong><br>
+      <b>Mode:</b> ${mode}<br>
+      <b>Prediksi:</b> ${prediksiMenang}<br>
+      <b>Over/Under:</b> ${hasilOU} (${totalSkor.toFixed(2)})<br>
+      <b>Ganjil/Genap:</b> ${hasilGG}<br>
+    </div>
   `;
+
+  tambahRiwayat(teamA, teamB, mode, prediksiMenang, hasilOU, hasilGG, totalSkor.toFixed(1));
+}
+
+function tambahRiwayat(teamA, teamB, mode, menang, ou, gg, skor) {
+  const riwayat = document.getElementById('riwayat');
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td>${nomor}</td>
+    <td>${teamA}</td>
+    <td>${teamB}</td>
+    <td>${mode}</td>
+    <td>${menang}</td>
+    <td>${ou}</td>
+    <td>${gg}</td>
+    <td>${skor}</td>
+    <td><button onclick="hapusRiwayat(this)">Delete</button></td>
+  `;
+  riwayat.appendChild(row);
+
+  const rowScreenshot = row.cloneNode(true);
+  document.getElementById("riwayatScreenshot").appendChild(rowScreenshot);
+  nomor++;
+}
+
+function hapusRiwayat(button) {
+  const row = button.closest('tr');
+  row.remove();
+}
+
+function clearAllRiwayat() {
+  const riwayat = document.getElementById('riwayat');
+  riwayat.innerHTML = '';
+  const riwayatScreenshot = document.getElementById('riwayatScreenshot');
+  riwayatScreenshot.innerHTML = '';
+  nomor = 1;
+}
+
+function tampilkanScreenshotMode() {
+  document.getElementById("popupScreenshot").style.display = "flex";
+}
+
+function tutupScreenshotMode() {
+  document.getElementById("popupScreenshot").style.display = "none";
 }
